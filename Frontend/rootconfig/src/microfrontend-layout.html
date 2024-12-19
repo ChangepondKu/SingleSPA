@@ -1,0 +1,119 @@
+<single-spa-router>
+  <!--
+
+    This is the single-spa Layout Definition for your microfrontends.
+    See https://single-spa.js.org/docs/layout-definition/ for more information.
+
+  -->
+
+  <!-- Example layouts you might find helpful:
+
+  <nav>
+    <application name="@org/navbar"></application>
+  </nav>
+  <route path="settings">
+    <application name="@org/settings"></application>
+  </route>
+
+  -->
+
+  <nav>
+    <application name="@cpTech/reactNavbar"></application>
+  </nav>
+  
+  <main>
+    <!-- Routes for different pages -->
+    <route default>
+      <application name="@cpTech/reactHomePage"></application>
+    </route>
+    <route path="home">
+      <application name="@cpTech/reactHomePage"></application>
+    </route>
+    <route path="about">
+      <application name="@cpTech/reactAboutPage"></application>
+    </route>
+    <route path="services">
+      <application name="@cpTech/reactSevicePage"></application>
+    </route>
+    <route path="/auth/signin">
+      <application name="@cpTech/reactLoginPage"></application>
+    </route>
+    <route path="/auth/signup">
+      <application name="@cpTech/reactLoginPage"></application>
+    </route>
+    <route path="/profile">
+      <application name="@cpTech/reactLoginPage"></application>
+    </route>
+    <route path="/dashboard">
+      <application name="@cpTech/reactdashboard"></application>
+    </route>
+    <route path="/products">
+      <application name="@cpTech/reactdashboard"></application>
+    </route>
+  </main>
+  
+  <footer>
+    <application name="@cpTech/reactFooter"></application>
+  </footer>
+</single-spa-router>
+
+
+
+<single-spa-router>
+  <main>
+    <route default >
+      <application name="@cpTech/reactHomePage"></application>
+    </route>
+  </main>
+</single-spa-router>
+
+
+
+<!-- <single-spa-router>
+  <div class="layout-container">
+    <aside class="sidebar">
+      <application name="@cpTech/reactSidebar"></application>
+    </aside>
+    
+    <div class="content-area">
+      <nav>
+        <application name="@cpTech/reactNavbar"></application>
+      </nav>
+
+      <main>
+        <route default>
+          <application name="@cpTech/reactHomePage"></application>
+        </route>
+        <route path="home">
+          <application name="@cpTech/reactHomePage"></application>
+        </route>
+        <route path="about">
+          <application name="@cpTech/reactAboutPage"></application>
+        </route>
+        <route path="services">
+          <application name="@cpTech/reactSevicePage"></application>
+        </route>
+        <route path="/auth/signin">
+          <application name="@cpTech/reactLoginPage"></application>
+        </route>
+        <route path="/auth/signup">
+          <application name="@cpTech/reactLoginPage"></application>
+        </route>
+        <route path="/profile">
+          <application name="@cpTech/reactLoginPage"></application>
+        </route>
+        <route path="/dashboard">
+          <application name="@cpTech/reactdashboard"></application>
+        </route>
+        <route path="/products">
+          <application name="@cpTech/reactdashboard"></application>
+        </route>
+      </main>
+
+      <footer>
+        <application name="@cpTech/reactFooter"></application>
+      </footer>
+    </div>
+  </div>
+</single-spa-router> -->
+

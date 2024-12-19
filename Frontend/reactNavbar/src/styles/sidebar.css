@@ -1,0 +1,62 @@
+#root {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+  }
+  
+  .app-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .sidebar {
+    width: 250px;
+    background-color: #1a1a1a;
+    color: white;
+    padding: 1rem;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .logo {
+    padding: 1rem 0;
+    border-bottom: 1px solid #333;
+    margin-bottom: 1rem;
+  }
+  
+  .logo h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: #646cff;
+  }
+  
+  .menu-item {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    margin: 0.5rem 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .menu-item:hover {
+    background-color: #2a2a2a;
+  }
+  
+  .icon {
+    margin-right: 0.75rem;
+    font-size: 1.2rem;
+  }
+  
+  
+  @media (prefers-color-scheme: light) {
+    .sidebar {
+      background-color: #f1f1f1;
+      color: #213547;
+    }
+    
+    .menu-item:hover {
+      background-color: #e5e5e5;
+    }
+  }

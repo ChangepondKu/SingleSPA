@@ -1,0 +1,68 @@
+// Sidebar base styles
+.sidebar {
+    background-color: #2c3e50;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    z-index: 1030; // Above Bootstrap's navbar
+    height: 100vh;
+  
+    // Desktop styles
+    &.sidebar-desktop {
+      position: sticky;
+      top: 0;
+      width: 250px;
+  
+      &.collapsed {
+        width: 60px;
+      }
+    }
+  
+    // Mobile styles
+    &.sidebar-mobile {
+      position: fixed;
+      width: 250px;
+      transform: translateX(0);
+      box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+  
+      &.collapsed {
+        transform: translateX(-100%);
+        box-shadow: none;
+      }
+    }
+  
+    // Common collapsed styles
+    &.collapsed {
+      .sidebar-title,
+      .label,
+      .username {
+        opacity: 0;
+        visibility: hidden;
+      }
+  
+      .user-section {
+        padding: 0.5rem;
+        justify-content: center;
+      }
+  
+      .nav-item {
+        justify-content: center;
+        padding: 0.75rem;
+      }
+    }
+  }
+  
+  // Overlay for mobile
+  @media (max-width: 991.98px) {
+    .sidebar:not(.collapsed)::after {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: -1;
+    }
+  }
