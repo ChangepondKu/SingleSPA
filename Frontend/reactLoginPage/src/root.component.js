@@ -11,8 +11,10 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 
 const Root = (props) => {
-  const  store  = props.store || fallbackStore;
-  const persistor = props.persistor || fallbackPersistor
+  const mode = localStorage.getItem('isStandAloneMode') || true;
+  const isStandalone = JSON.parse(mode);
+  const  store  = isStandalone ? fallbackStore : props.store;
+  const persistor = isStandalone ? fallbackPersistor : props.persistor; 
   return (
 
     <Provider store={store}>

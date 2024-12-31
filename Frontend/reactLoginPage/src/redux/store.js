@@ -1,12 +1,13 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // Defaults to localStorage
+// import storage from "redux-persist/lib/storage"; // Defaults to localStorage
 import userReducer from "./userSlice/userSlice";
+import sessionStorage from "redux-persist/lib/storage/session";
 
 // Persist configuration
 const persistConfig = {
-  key: 'root',
-  storage,
+  key: 'fallback login',
+  storage : sessionStorage,
 };
 
 // Wrap the user reducer with persistReducer

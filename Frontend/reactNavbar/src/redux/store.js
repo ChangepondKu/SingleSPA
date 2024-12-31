@@ -1,22 +1,18 @@
 // fallbackStore.js
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
-import storage from 'redux-persist/lib/storage';
+import sessionStorage from 'redux-persist/lib/storage/session';
+// import storage from 'redux-persist/lib/storage';
+import userReducer from "./slice/userSlice";
 
-// Example slice for the fallback store
-const fallbackSlice = createSlice({
-  name: 'fallback',
-  initialState: { message: 'Fallback store in use' },
-  reducers: {},
-});
 
 // Fallback reducer configuration
 const persistConfig = {
-  key: 'fallback',
-  storage,
+  key: 'fallback navbar',
+  storage : sessionStorage,
 };
 
-const persistedReducer = persistReducer(persistConfig, fallbackSlice.reducer);
+const persistedReducer = persistReducer(persistConfig, userReducer);
 
 const fallbackStore = configureStore({
   reducer: {

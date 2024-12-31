@@ -13,6 +13,8 @@ const Profile = () => {
 
   const state = useSelector(state => state.user)
   console.log(state)
+  // Get the token from cookies
+  const token = Cookies.get('authToken');
 
   const [profile, setProfile] = useState({
     name: '',
@@ -26,18 +28,18 @@ const Profile = () => {
 
   useEffect(() => {
     const mockUserData = {
-      name: localStorage.getItem('name') || state?.name || '',
+      name: sessionStorage.getItem('name') || state?.name || '',
       // lastName: localStorage.getItem('lastName') || '',
-      email: localStorage.getItem('email') || state?.email || '',
+      email: sessionStorage.getItem('email') || state?.email || '',
       // phone: localStorage.getItem('phone') || '',
       // address: '123 Main St, City, Country',
       // occupation: 'Software Developer',
       // birthDate: '1990-01-01',
       // bio: 'Passionate about technology and innovation.',
-      id: state?.id || ''
+      id:  sessionStorage.getItem('id') || state?.id 
     };
     setProfile(mockUserData);
-  }, []);
+  }, [token]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,8 +56,7 @@ const Profile = () => {
     setSuccess('');
 
     try {
-      // Get the token from cookies
-      const token = Cookies.get('authToken');
+      
       if (!token) {
         setError('Authentication token not found. Please log in again.');
         return;
@@ -82,9 +83,9 @@ const Profile = () => {
       setSuccess('Profile updated successfully!');
       setIsEditing(false);
 
-      // Optionally update the state or localStorage
-      localStorage.setItem('name', profile.name);
-      localStorage.setItem('email', profile.email);
+      // // Optionally update the state or localStorage
+      // localStorage.setItem('name', profile.name);
+      // localStorage.setItem('email', profile.email);
 
       // Clear success message after 3 seconds
       setTimeout(() => {

@@ -9,8 +9,10 @@ import { fallbackPersistor, fallbackStore } from './redux/store';
 
 
 const Root = (props) => {
-  const persistor = props.persistor || fallbackPersistor;
-  const store = props.store || fallbackStore
+  const mode = localStorage.getItem('isStandAloneMode') || true;
+  const isStandalone = JSON.parse(mode);
+  const persistor = isStandalone ? fallbackPersistor : props.persistor;
+  const store = isStandalone ? fallbackStore : props.store;
   return (
     <Provider store={store}>
       <PersistGate loading={<div>loading...</div>} persistor={persistor}></PersistGate>

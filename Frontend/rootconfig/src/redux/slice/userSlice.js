@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 
-const initialState = sessionStorage.getItem('userdetails') || {
+const initialState = {
     name: '',
     email: '',
     password: '',
