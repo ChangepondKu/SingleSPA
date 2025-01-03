@@ -6,12 +6,15 @@ import { errorHandler } from './middleware/errorHandler.js';
 import { paths } from './config/paths.js';
 import productRoutes from './routes/productRoutes.js';
 import { mkdir } from 'fs/promises';
+import { initWebSocket } from './websocket/wsServer.js';
 // Load environment variables
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Initialize WebSocket
+initWebSocket();
 
 // Middleware
 app.use(cors());
@@ -25,7 +28,7 @@ app.use('/uploads', express.static(paths.uploads));
 try {
   await mkdir(paths.uploads, { recursive: true });
 } catch (err) {
-  if (err.code !== 'EEXIST') {
+  if (err.code !== 'EXIST') {
     console.error('Error creating uploads directory:', err);
   }
 }

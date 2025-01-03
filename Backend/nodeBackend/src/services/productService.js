@@ -1,5 +1,6 @@
 import pool from '../config/database.js';
 import { DatabaseError, ValidationError } from '../utils/errors.js';
+import { broadcastUpdate } from '../websocket/wsServer.js';
 
 export const createProduct = async (productData) => {
   const client = await pool.connect();
@@ -11,6 +12,8 @@ export const createProduct = async (productData) => {
        RETURNING *`,
       [name, description, price, stock, type, image_url]
     );
+    const updatedProduct = result.rows[0];
+    broadcastUpdate('product_created', updatedProduct);
     return result.rows[0];
   } catch (error) {
     throw new DatabaseError(`Error creating product: ${error.message}`);
@@ -36,11 +39,12 @@ export const updateProduct = async (id, productData) => {
        RETURNING *`,
       [name, description, price, stock, type, image_url, id]
     );
-    
+
     if (result.rows.length === 0) {
       throw new ValidationError('Product not found');
     }
-    
+    const updatedProduct = result.rows[0];
+    broadcastUpdate('product_updated', updatedProduct);
     return result.rows[0];
   } catch (error) {
     throw new DatabaseError(`Error updating product: ${error.message}`);
@@ -56,11 +60,11 @@ export const getProductById = async (id) => {
       'SELECT * FROM products WHERE id = $1',
       [id]
     );
-    
+
     if (result.rows.length === 0) {
       throw new ValidationError('Product not found');
     }
-    
+
     return result.rows[0];
   } catch (error) {
     throw new DatabaseError(`Error fetching product: ${error.message}`);
@@ -73,17 +77,17 @@ export const listProducts = async (page, limit) => {
   const client = await pool.connect();
   try {
     const offset = (page - 1) * limit;
-    
+
     const products = await client.query(
       `SELECT * FROM products
        ORDER BY created_at DESC
        LIMIT $1 OFFSET $2`,
       [limit, offset]
     );
-    
+
     const totalResult = await client.query('SELECT COUNT(*) FROM products');
     const total = parseInt(totalResult.rows[0].count);
-    
+
     return {
       products: products.rows,
       total
@@ -104,7 +108,7 @@ export const getDashboardSummary = async () => {
        FROM products 
        GROUP BY type`
     );
-    
+
     return {
       totalProducts: parseInt(totalResult.rows[0].count),
       productsByType: typeBreakdown.rows
@@ -131,6 +135,10 @@ export const deleteProduct = async (id) => {
 
     if (result.rowCount === 0) {
       throw new DatabaseError(`Product with ID ${id} does not exist.`);
+    }
+
+    if (result.rows[0]) {
+      broadcastUpdate('product_deleted', result.rows[0]);
     }
 
     return {

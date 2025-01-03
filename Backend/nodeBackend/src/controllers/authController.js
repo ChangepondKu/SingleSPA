@@ -32,7 +32,7 @@ export const login = async (req, res, next) => {
 
 export const updateUser = async (req, res, next) => {
   try {
-    const userId = req.user.userId;
+    const userId = req.body.id;
     const updateData = {
       name: req.body.name,
       email: req.body.email

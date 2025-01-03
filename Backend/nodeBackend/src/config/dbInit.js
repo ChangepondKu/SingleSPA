@@ -6,9 +6,9 @@ const createTables = async () => {
     await client.query('BEGIN');
 
     // // Delete the table if it exists
-    await client.query(`
-      DROP TABLE products
-    `);
+    // await client.query(`
+    //   DROP TABLE products
+    // `);
     
     //create table
     await client.query(`
