@@ -20,6 +20,56 @@ const Dashboard = () => {
   const token = Cookies.get('authToken');
   const chartRef = useRef(null); // Ref to store chart instance
 
+  const ws = useRef(null);
+  useEffect(() => {
+    const websocketURL = 'ws://localhost:9321';
+    ws.current = new WebSocket(websocketURL);
+
+    ws.current.onopen = () => {
+      console.log('WebSocket connection established');
+    };
+
+    ws.current.onmessage = (event) => {
+      try {
+        const websocketResponse = JSON.parse(event.data);
+        if (websocketResponse?.data) {
+          if (websocketResponse?.type === 'product_updated') {
+            setProducts((prev) =>
+              prev.map((p) => (p.id === websocketResponse?.data?.id ? websocketResponse?.data : p))
+            );
+            fetchSummary(); // Re-fetch summary
+          } else if (websocketResponse?.type === 'product_created') {
+            setProducts((prev) => [...prev, websocketResponse?.data]);
+            fetchSummary(); // Re-fetch summary
+          } else if (websocketResponse?.type === 'product_deleted') {
+            setProducts((prev) =>
+              prev ? prev.filter((product) => product.id !== websocketResponse.data.id) : []
+            );
+            fetchSummary(); // Re-fetch summary
+          }
+        }
+      } catch (error) {
+        console.error('Error parsing WebSocket message:', error);
+      }
+    };
+
+    ws.current.onerror = (error) => {
+      console.error('WebSocket error:', error);
+    };
+
+    ws.current.onclose = (event) => {
+      console.log('WebSocket connection closed:', event.reason || 'Unknown reason');
+    };
+
+    // Cleanup WebSocket on component unmount
+    return () => {
+      if (ws.current) {
+        ws.current.close();
+        ws.current = null;
+      }
+    };
+  }, []);
+
   const fetchSummary = async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/products/dashboard/summary', {
@@ -79,7 +129,7 @@ const Dashboard = () => {
       });
     }
   }, [summary]);
-
+  console.log(products);
   const handleDeleteProduct = async (productId) => {
     try {
       await axios.delete(`http://localhost:5000/api/products/delete/${productId}`, {
@@ -89,8 +139,8 @@ const Dashboard = () => {
         },
       });
 
-      setProducts((prev) => prev.filter((product) => product.id !== productId));
-      fetchSummary(); // Re-fetch summary
+      // setProducts((prev) => prev.filter((product) => product.id !== productId));
+      // fetchSummary(); // Re-fetch summary
 
       Toastify({
         text: 'Product deleted successfully',
@@ -134,11 +184,11 @@ const Dashboard = () => {
           position: 'right',
           backgroundColor: '#28a745',
         }).showToast();
-        
-        setProducts(prev => [...prev, response.data.product]);
+
+        // setProducts(prev => [...prev, response.data.product]);
       });
 
-      fetchSummary(); // Re-fetch summary
+      // fetchSummary(); // Re-fetch summary
       setShowAddForm(false);
     } catch (error) {
       Toastify({
@@ -170,10 +220,10 @@ const Dashboard = () => {
         }
       );
 
-      setProducts((prev) =>
-        prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-      );
-      fetchSummary(); // Re-fetch summary
+      // setProducts((prev) =>
+      //   prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
+      // );
+      // fetchSummary(); // Re-fetch summary
       setEditingProduct(null);
     } catch (error) {
       console.error('Error updating product:', error);

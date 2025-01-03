@@ -36,7 +36,7 @@ const Profile = () => {
       // occupation: 'Software Developer',
       // birthDate: '1990-01-01',
       // bio: 'Passionate about technology and innovation.',
-      id:  sessionStorage.getItem('id') || state?.id 
+      id: sessionStorage.getItem('id') || state?.id
     };
     setProfile(mockUserData);
   }, [token]);
@@ -56,7 +56,7 @@ const Profile = () => {
     setSuccess('');
 
     try {
-      
+
       if (!token) {
         setError('Authentication token not found. Please log in again.');
         return;
